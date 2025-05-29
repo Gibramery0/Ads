@@ -1,0 +1,94 @@
+{
+    "segments": [
+        {
+            "title": "Test Oyunları",
+            "count": 3,
+            "hits": [
+                {
+                    "Id": "1234567890",
+                    "Title": "Test Oyunu 1",
+                    "Developer": "Test Geliştirici",
+                    "Description": "Bu bir test oyunudur.",
+                    "Sub Type": "Javascript",
+                    "Game URL": "https://html5.gamedistribution.com/27673bc45d2e4b27b7cd24e422f7c257",
+                    "GD URL": "https://gamedistribution.com/games/test-oyunu-1",
+                    "Genres": [
+                        "Arcade"
+                    ],
+                    "Tags": [
+                        "test",
+                        "arcade",
+                        "eğlence"
+                    ],
+                    "Assets": [
+                        "https://img.gamedistribution.com/27673bc45d2e4b27b7cd24e422f7c257-512x384.jpg"
+                    ],
+                    "Instructions": "Fare ile oynayın",
+                    "Key Features": "",
+                    "Mobile Ready": [
+                        "For IOS",
+                        "For Android"
+                    ],
+                    "Width": 800,
+                    "Height": 600
+                },
+                {
+                    "Id": "0987654321",
+                    "Title": "Test Oyunu 2",
+                    "Developer": "Test Geliştirici",
+                    "Description": "Bu ikinci test oyunudur.",
+                    "Sub Type": "Javascript",
+                    "Game URL": "https://html5.gamedistribution.com/a55c9cc9c21e4fc683c8c6857f3d0c75",
+                    "GD URL": "https://gamedistribution.com/games/test-oyunu-2",
+                    "Genres": [
+                        "Puzzle"
+                    ],
+                    "Tags": [
+                        "test",
+                        "puzzle",
+                        "bulmaca"
+                    ],
+                    "Assets": [
+                        "https://img.gamedistribution.com/a55c9cc9c21e4fc683c8c6857f3d0c75-512x384.jpeg"
+                    ],
+                    "Instructions": "Bulmacaları çözmek için farenizi kullanın",
+                    "Key Features": "",
+                    "Mobile Ready": [
+                        "For IOS",
+                        "For Android"
+                    ],
+                    "Width": 800,
+                    "Height": 600
+                },
+                {
+                    "Id": "abcdef1234",
+                    "Title": "Test Oyunu 3",
+                    "Developer": "Test Geliştirici",
+                    "Description": "Bu üçüncü test oyunudur.",
+                    "Sub Type": "Javascript",
+                    "Game URL": "https://html5.gamedistribution.com/9ee26ba4405c456094c70af7dc31a524",
+                    "GD URL": "https://gamedistribution.com/games/test-oyunu-3",
+                    "Genres": [
+                        "Action"
+                    ],
+                    "Tags": [
+                        "test",
+                        "action",
+                        "aksiyon"
+                    ],
+                    "Assets": [
+                        "https://img.gamedistribution.com/9ee26ba4405c456094c70af7dc31a524-512x384.jpg"
+                    ],
+                    "Instructions": "Klavye ile kontrol edin",
+                    "Key Features": "",
+                    "Mobile Ready": [
+                        "For IOS",
+                        "For Android"
+                    ],
+                    "Width": 800,
+                    "Height": 600
+                }
+            ]
+        }
+    ]
+} 

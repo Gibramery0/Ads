@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oyun Detayları - MongoDB</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .game-detail {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-title-large {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .game-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .game-iframe-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .game-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+        
+        .game-description-full {
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .tag {
+            background-color: #f0f0f0;
+            color: #666;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background-color: #ff6b9d;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .back-button:hover {
+            background-color: #ff4785;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        @media (max-width: 768px) {
+            .game-iframe-container {
+                padding-bottom: 75%; /* 4:3 aspect ratio for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Oyun Merkezi</h1>
+    </header>
+    
+    <div class="container">
+        <a href="/" class="back-button">← Ana Sayfaya Dön</a>
+        
+        <div id="game-container">
+            <div class="loading">Oyun yükleniyor...</div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Oyun Merkezi - MongoDB ile Çalışan Uygulama</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // URL'den oyun ID'sini al
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameId = window.location.pathname.split('/').pop() || urlParams.get('id');
+            
+            if (!gameId) {
+                document.getElementById('game-container').innerHTML = `
+                    <div class="loading error">Hata: Oyun ID'si bulunamadı.<br>
+                    <a href="/">Ana sayfaya dön</a></div>
+                `;
+                return;
+            }
+            
+            // Oyun verilerini yükle
+            loadGameDetails(gameId);
+        });
+        
+        async function loadGameDetails(gameId) {
+            const gameContainer = document.getElementById('game-container');
+            
+            try {
+                console.log(`Oyun detayları yükleniyor, ID: ${gameId}`);
+                const response = await fetch(`/api/games/${gameId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    cache: 'no-cache'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API yanıt hatası: ${response.status} ${response.statusText}`);
+                }
+                
+                const game = await response.json();
+                console.log('Oyun detayları yüklendi:', game);
+                
+                // Sayfa başlığını güncelle
+                document.title = `${game.Title || game.Name || 'Oyun Detayları'} - Oyun Merkezi`;
+                
+                // Oyun detaylarını görüntüle
+                displayGameDetails(game);
+                
+            } catch (error) {
+                console.error('Oyun detayları yüklenirken hata oluştu:', error);
+                gameContainer.innerHTML = `
+                    <div class="loading error">Hata: ${error.message}<br>
+                    <a href="/">Ana sayfaya dön</a></div>
+                `;
+            }
+        }
+        
+        function displayGameDetails(game) {
+            const gameContainer = document.getElementById('game-container');
+            
+            // Oyun URL'si veya iframe URL'si
+            const gameUrl = game.GameURL || game.Game_URL || game.URL || game.Url || game.url || '';
+            
+            // Oyun başlığı
+            const gameTitle = game.Title || game.Name || 'İsimsiz Oyun';
+            
+            // Oyun açıklaması
+            const gameDescription = game.Description || game.desc || 'Bu oyun için açıklama bulunmamaktadır.';
+            
+            // Oyun geliştiricisi
+            const gameDeveloper = game.Developer || game.author || 'Bilinmiyor';
+            
+            // Oyun kategorileri/türleri
+            const gameGenres = Array.isArray(game.Genres) ? game.Genres : 
+                              (game.Genre ? [game.Genre] : 
+                              (game.Category ? [game.Category] : ['Genel']));
+            
+            // Oyun etiketleri
+            const gameTags = Array.isArray(game.Tags) ? game.Tags : [];
+            
+            // Oyun görseli
+            const gameImage = Array.isArray(game.Assets) && game.Assets.length > 0 ? game.Assets[0] : 
+                             (game.Image || game.Thumbnail || 'https://via.placeholder.com/800x450?text=Oyun+Görseli');
+            
+            // HTML içeriğini oluştur
+            let html = `
+                <div class="game-detail">
+                    <h2 class="game-title-large">${gameTitle}</h2>
+                    
+                    <div class="game-meta">
+                        <span class="game-genre">${gameGenres[0] || 'Genel'}</span>
+                        <span class="game-developer">Geliştirici: ${gameDeveloper}</span>
+                    </div>
+                    
+                    <div class="game-iframe-container">
+                        <iframe 
+                            src="${gameUrl}" 
+                            class="game-iframe" 
+                            allowfullscreen
+                            allow="fullscreen; autoplay; encrypted-media"
+                            title="${gameTitle}"
+                            loading="lazy"
+                        ></iframe>
+                        <div class="loading-overlay" id="loading-overlay">
+                            <div class="loading">Oyun yükleniyor...</div>
+                        </div>
+                    </div>
+                    
+                    <p class="game-description-full">${gameDescription}</p>
+                    
+                    <div class="tag-list">
+                        ${gameGenres.map(genre => `<span class="tag">${genre}</span>`).join('')}
+                        ${gameTags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            
+            gameContainer.innerHTML = html;
+            
+            // iframe yüklendiğinde loading overlay'i kaldır
+            const iframe = document.querySelector('.game-iframe');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            
+            iframe.onload = function() {
+                loadingOverlay.style.display = 'none';
+            };
+            
+            // Eğer 10 saniye içinde yüklenmezse yine de overlay'i kaldır
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 10000);
+        }
+    </script>
+</body>
+</html> 

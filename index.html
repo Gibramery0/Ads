@@ -4,7 +4,7 @@
     <meta name="google-adsense-account" content="ca-pub-2835215845925411">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Little Candy Bakery - Oyun</title>
+    <title>Oyun Merkezi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -19,6 +19,7 @@
             flex-direction: column;
             min-height: 100vh;
             background-color: #ffeef2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         /* Header Styles */
         .header {
@@ -36,6 +37,13 @@
             left: 20px;
             font-size: 24px;
             cursor: pointer;
+            color: #ff6b9d;
+        }
+        .logo {
+            position: absolute;
+            left: 60px;
+            font-size: 24px;
+            font-weight: bold;
             color: #ff6b9d;
         }
         .search-container {
@@ -107,8 +115,6 @@
             align-items: flex-start;
             padding: 20px;
             transition: padding-left 0.3s ease;
-            flex-wrap: wrap;
-            gap: 20px;
         }
         .container.sidebar-active {
             padding-left: 80px;
@@ -125,7 +131,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            order: 2;
         }
         .game-container {
             width: 100%;
@@ -189,6 +194,208 @@
             margin-bottom: 15px;
             line-height: 1.6;
         }
+        .game-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .game-tag {
+            background-color: #ffe0e9;
+            color: #ff6b9d;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        /* Category Styles */
+        .category-section {
+            width: 100%;
+            margin-bottom: 40px;
+            background-color: #fff5f7;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #ffe0e9;
+            padding-bottom: 10px;
+        }
+        .category-title {
+            font-size: 24px;
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+        .view-all {
+            color: #ff6b9d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 5px 15px;
+            background-color: #ffe0e9;
+            border-radius: 20px;
+            transition: background-color 0.2s;
+        }
+        .view-all:hover {
+            background-color: #ffc1d6;
+        }
+        .game-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #ff6b9d #ffe0e9;
+            -webkit-overflow-scrolling: touch; /* iOS için pürüzsüz kaydırma */
+            scroll-behavior: smooth; /* Pürüzsüz kaydırma */
+            padding-bottom: 15px; /* Kaydırma çubuğu için yer */
+        }
+        .game-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .game-scroll::-webkit-scrollbar-track {
+            background: #ffe0e9;
+            border-radius: 10px;
+        }
+        .game-scroll::-webkit-scrollbar-thumb {
+            background-color: #ff6b9d;
+            border-radius: 10px;
+        }
+        .game-scroll .game-card {
+            min-width: 180px;
+            max-width: 180px;
+            transition: transform 0.3s ease;
+            margin-bottom: 5px; /* Alt boşluk ekle */
+        }
+        .game-scroll .game-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        /* Scroll Buttons */
+        .scroll-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .scroll-btn {
+            background-color: #ff6b9d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .scroll-btn:hover {
+            background-color: #ff4785;
+        }
+        .scroll-btn:disabled {
+            background-color: #ffb8cb;
+            cursor: not-allowed;
+        }
+        
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .game-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .game-card-image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+        .lazy-image {
+            opacity: 0;
+        }
+        .lazy-image.loaded {
+            opacity: 1;
+        }
+        .game-card-loading {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 107, 157, 0.2);
+            border-top: 3px solid #ff6b9d;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            margin-top: -15px;
+            margin-left: -15px;
+            animation: spin 1s linear infinite;
+        }
+        .game-card-info {
+            padding: 12px;
+            background: linear-gradient(to bottom, #fff, #fff5f7);
+        }
+        .game-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .game-card-genre {
+            font-size: 12px;
+            color: #ff6b9d;
+            background-color: #ffe0e9;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 107, 157, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #ff6b9d;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
         /* Mobile Styles */
         @media (max-width: 1200px) {
@@ -204,29 +411,35 @@
             }
             .container {
                 padding: 10px;
-                flex-direction: column;
-                align-items: center;
             }
             .container.sidebar-active {
                 padding-left: 70px;
             }
             .content {
-                order: 1;
                 margin: 0;
                 width: 100%;
             }
-            .ad {
-                width: 100%;
-                max-width: 400px;
-                height: 250px;
-                min-height: 250px;
-            }
-            .ad-left, .ad-right {
-                height: 250px;
-                min-height: 250px;
-            }
             .game-container {
                 padding-top: 100%;
+            }
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .game-scroll .game-card {
+                min-width: 150px;
+                max-width: 150px;
+            }
+            .category-title {
+                font-size: 20px;
+            }
+            .home-header {
+                padding: 20px 15px;
+            }
+            .home-title {
+                font-size: 28px;
+            }
+            .home-subtitle {
+                font-size: 16px;
             }
         }
 
@@ -236,6 +449,10 @@
             }
             .menu-icon {
                 left: 10px;
+            }
+            .logo {
+                left: 45px;
+                font-size: 18px;
             }
             .search-container {
                 padding: 0 40px;
@@ -259,6 +476,134 @@
             .game-info p {
                 font-size: 14px;
             }
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+            }
+            .game-scroll .game-card {
+                min-width: 130px;
+                max-width: 130px;
+            }
+            .category-title {
+                font-size: 16px;
+            }
+            .home-title {
+                font-size: 24px;
+            }
+            .home-subtitle {
+                font-size: 14px;
+            }
+            .category-section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .home-header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px 20px;
+            background: linear-gradient(to right, #ff6b9d, #ff8fb3);
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        }
+        .home-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .home-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        /* Game View Styles */
+        .game-view-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .game-view-content {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .game-container-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-ads-left, .game-ads-right {
+            width: 160px;
+            height: 600px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            position: sticky;
+            top: 20px;
+        }
+
+        .ad-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            font-size: 14px;
+            color: #999;
+            letter-spacing: 2px;
+        }
+
+        .ad-bottom {
+            width: 100%;
+            height: 90px;
+            margin: 20px 0;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            color: #666;
+        }
+
+        /* Responsive Game View */
+        @media (max-width: 1024px) {
+            .game-ads-left, .game-ads-right {
+                width: 120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-view-content {
+                flex-direction: column;
+            }
+            
+            .game-ads-left, .game-ads-right {
+                width: 100%;
+                height: 100px;
+                margin-bottom: 15px;
+            }
+            
+            .game-ads-left .ad-text, .game-ads-right .ad-text {
+                writing-mode: horizontal-tb;
+                transform: none;
+            }
+            
+            .game-ads-right {
+                order: 3;
+            }
+            
+            .game-container-wrapper {
+                order: 2;
+            }
         }
     </style>
 </head>
@@ -266,77 +611,942 @@
     <!-- Header -->
     <div class="header">
         <i class="fas fa-bars menu-icon" id="menuIcon"></i>
+        <div class="logo">Oyun Merkezi</div>
         <div class="search-container">
-            <input type="text" class="search-bar" placeholder="Oyun ara...">
+            <input type="text" class="search-bar" id="searchBar" placeholder="Oyun ara...">
         </div>
     </div>
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <a href="#" class="sidebar-item">
+        <a href="#" class="sidebar-item" data-category="all">
             <i class="fas fa-gamepad"></i>
             <span>Tüm Oyunlar</span>
         </a>
-        <a href="#" class="sidebar-item">
+        <a href="#" class="sidebar-item" data-category="action">
+            <i class="fas fa-bolt"></i>
+            <span>Aksiyon</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="adventure">
+            <i class="fas fa-mountain"></i>
+            <span>Macera</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="puzzle">
             <i class="fas fa-puzzle-piece"></i>
             <span>Bulmaca</span>
         </a>
-        <a href="#" class="sidebar-item">
-            <i class="fas fa-star"></i>
-            <span>Popüler</span>
+        <a href="#" class="sidebar-item" data-category="strategy">
+            <i class="fas fa-chess"></i>
+            <span>Strateji</span>
         </a>
-        <a href="#" class="sidebar-item">
+        <a href="#" class="sidebar-item" data-category="sports">
+            <i class="fas fa-futbol"></i>
+            <span>Spor</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="favorites">
             <i class="fas fa-heart"></i>
             <span>Favoriler</span>
         </a>
     </div>
 
-    <div class="container">
-        <div class="ad ad-left">
-            Ads Field
-        </div>
-
-        <div class="content">
-            <div class="game-container">
-                <iframe 
-                    src="https://html5.gamedistribution.com/8ae87b2c4ede4a9e8a56d9df8ed17052/" 
-                    scrolling="none" 
-                    frameborder="0">
-                </iframe>
+    <div class="container" id="mainContainer">
+        <div class="content" id="content">
+            <!-- Ana Sayfa Görünümü -->
+            <div id="homeView">
+                <div id="gamesView">
+                    <div class="loading" id="loadingIndicator">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <!-- Kategorilere ayrılmış oyunlar buraya gelecek -->
+                </div>
             </div>
-
-            <div class="ad-bottom">
-                Ads Field
+            
+            <!-- Kategori Görünümü -->
+            <div id="categoryView" style="display: none;">
+                <div class="category-view-header">
+                    <button class="back-button" onclick="returnToHome()">Ana Sayfaya Dön</button>
+                    <h2 class="category-view-title" id="categoryTitle">Kategori</h2>
+                </div>
+                <div class="games-grid" id="gamesGrid"></div>
             </div>
-
-            <div class="game-info">
-                <h2>Little Candy Bakery</h2>
-                <p>Little candy bakery is a puzzle match 3 game, bake the candy and match candies together to win. The game theme is calm and entertaining.</p>
-                <h3>Nasıl Oynanır:</h3>
-                <p>Öğeleri hareket ettirmek için farenizin sol tuşunu kullanın (yukarı, aşağı, sağa, sola).</p>
+            
+            <!-- Oyun Görünümü -->
+            <div id="gameView" style="display: none;">
+                <div class="game-view-navigation">
+                    <button class="back-button" onclick="returnToHome()">Ana Sayfaya Dön</button>
+                    <button class="back-button" onclick="returnToGames()">Kategoriye Dön</button>
+                </div>
+                
+                <div class="game-view-content">
+                    <div class="game-ads-left ad">
+                        <span class="ad-text">Reklam Alanı</span>
+                    </div>
+                    
+                    <div class="game-container-wrapper">
+                        <div class="game-container" id="gameContainer">
+                            <iframe 
+                                id="gameFrame"
+                                scrolling="none" 
+                                frameborder="0">
+                            </iframe>
+                        </div>
+                        
+                        <div class="ad-bottom">
+                            <span class="ad-text">Reklam Alanı</span>
+                        </div>
+                        
+                        <div class="game-info" id="gameInfo">
+                            <h2 id="gameTitle"></h2>
+                            <p id="gameDescription"></p>
+                            <h3>Nasıl Oynanır:</h3>
+                            <p id="gameInstructions"></p>
+                            <div class="game-tags" id="gameTags"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-ads-right ad">
+                        <span class="ad-text">Reklam Alanı</span>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="ad ad-right">
-            Ads Field
         </div>
     </div>
 
     <script>
-        const menuIcon = document.getElementById('menuIcon');
-        const sidebar = document.getElementById('sidebar');
-        const container = document.querySelector('.container');
-
-        menuIcon.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-            container.classList.toggle('sidebar-active');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && !menuIcon.contains(e.target) && sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-                container.classList.remove('sidebar-active');
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const menuIcon = document.getElementById('menuIcon');
+            const sidebar = document.getElementById('sidebar');
+            const container = document.querySelector('.container');
+            const searchBar = document.getElementById('searchBar');
+            const gamesGrid = document.getElementById('gamesGrid');
+            const gamesView = document.getElementById('gamesView');
+            const gameView = document.getElementById('gameView');
+            const gameFrame = document.getElementById('gameFrame');
+            const gameTitle = document.getElementById('gameTitle');
+            const gameDescription = document.getElementById('gameDescription');
+            const gameInstructions = document.getElementById('gameInstructions');
+            const gameTags = document.getElementById('gameTags');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            if (!loadingIndicator) {
+                console.error('Loading indicator element not found');
+                return;
             }
+            
+            // Sidebar Toggle
+            menuIcon.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                container.classList.toggle('sidebar-active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !menuIcon.contains(e.target) && sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                    container.classList.remove('sidebar-active');
+                }
+            });
+            
+            // Arama çubuğu işlevselliği
+            searchBar.addEventListener('input', debounce(async function() {
+                const searchTerm = searchBar.value.trim();
+                
+                if (searchTerm.length < 2) {
+                    // Ana sayfa görünümüne dön
+                    showView('homeView');
+                    return;
+                }
+                
+                try {
+                    // Yükleme göstergesini göster
+                    const loadingIndicator = document.getElementById('loadingIndicator');
+                    if (loadingIndicator) {
+                        loadingIndicator.style.display = 'flex';
+                        loadingIndicator.innerHTML = '<div class="loading-spinner"></div><p style="margin-left: 15px; color: #ff6b9d; font-weight: bold;">Arama yapılıyor...</p>';
+                    }
+                    
+                    // API'den arama sonuçlarını al
+                    const response = await fetch(`/api/games/search?query=${encodeURIComponent(searchTerm)}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Arama hatası: ${response.status}`);
+                    }
+                    
+                    const searchResults = await response.json();
+                    
+                    // Kategori görünümünü arama sonuçlarıyla doldur
+                    document.getElementById('categoryTitle').textContent = `"${searchTerm}" için Arama Sonuçları`;
+                    populateCategoryView(searchResults);
+                    
+                    // Kategori görünümünü göster
+                    showView('categoryView');
+                    
+                } catch (error) {
+                    console.error('Arama yapılırken hata:', error);
+                    showErrorMessage(`Arama yapılırken bir hata oluştu: ${error.message}`);
+                } finally {
+                    // Yükleme göstergesini gizle
+                    if (loadingIndicator) {
+                        loadingIndicator.style.display = 'none';
+                    }
+                }
+            }, 500)); // 500ms gecikme ile debounce
+            
+            // Debounce fonksiyonu
+            function debounce(func, wait) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(this, args), wait);
+                };
+            }
+            
+            // Global değişkenler
+            let gamesData = [];
+            let filteredGames = [];
+            let favoriteGames = [];
+            let gameCategories = []; // Tüm kategorilerin listesi
+            let gameCategoryMap = {}; // Kategori başına oyunları tutan obje
+            let isDataLoading = false; // Veri yükleme durumunu tutan değişken
+            let allGamesLoaded = false; // Tüm oyunların yüklenip yüklenmediğini kontrol eden değişken
+            let gamesByCategory = { // Kategorilere göre oyunları saklayan nesne
+                'action': [],
+                'adventure': [],
+                'arcade': [],
+                'strategy': [],
+                'rpg': [],
+                'simulation': [],
+                'sports': [],
+                'racing': [],
+                'puzzle': [],
+                'shooter': [],
+                'board': [],
+                'card': [],
+                'casual': [],
+                'other': []
+            };
+            
+            // Oyun verilerini MongoDB'den yükleyen ana fonksiyon
+            async function loadGamesData() {
+                if (isDataLoading) return;
+                
+                try {
+                    isDataLoading = true;
+                    
+                    // Yükleme göstergesini hazırla
+                    const loadingIndicator = document.getElementById('loadingIndicator');
+                    if (loadingIndicator) {
+                        loadingIndicator.style.display = 'flex';
+                        loadingIndicator.innerHTML = '<div class="loading-spinner"></div><p style="margin-left: 15px; color: #ff6b9d; font-weight: bold;">Veriler MongoDB\'den yükleniyor...</p>';
+                    }
+                    
+                    // API'den verileri çek
+                    console.log('MongoDB\'den oyun verileri yükleniyor...');
+                    try {
+                        const response = await fetch('/api/games', {
+                            method: 'GET',
+                            headers: {
+                                'Cache-Control': 'no-cache',
+                                'Pragma': 'no-cache'
+                            }
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP hatası: ${response.status} ${response.statusText}`);
+                        }
+                        
+                        const data = await response.json();
+                        console.log('MongoDB verisi başarıyla yüklendi!', data);
+                        await processFullGamesData(data);
+                    } catch (error) {
+                        console.error('Veri yüklenirken hata:', error);
+                        showErrorMessage(`MongoDB\'den veri yüklenirken bir hata oluştu: ${error.message}`);
+                    }
+                    
+                } catch (error) {
+                    console.error('Oyun verileri yüklenirken hata oluştu:', error);
+                    showErrorMessage(`Oyun verileri yüklenirken bir hata oluştu: ${error.message}`);
+                } finally {
+                    isDataLoading = false;
+                }
+            }
+            
+            // Hata mesajını gösteren yardımcı fonksiyon
+            function showErrorMessage(message) {
+                const gamesView = document.getElementById('gamesView');
+                if (gamesView) {
+                    gamesView.innerHTML = `
+                        <div style="text-align: center; padding: 20px; margin-top: 30px;">
+                            <h2 style="color: red; margin-bottom: 15px;">Veri Yükleme Hatası</h2>
+                            <p style="color: #666; margin-bottom: 20px;">${message}</p>
+                            <button id="retryButton" style="background-color: #ff6b9d; color: white; border: none; border-radius: 5px; padding: 12px 25px; cursor: pointer; font-size: 16px;">
+                                Tekrar Dene
+                            </button>
+                        </div>
+                    `;
+                    
+                    const retryButton = document.getElementById('retryButton');
+                    if (retryButton) {
+                        retryButton.addEventListener('click', () => {
+                            loadGamesData();
+                        });
+                    }
+                } else {
+                    console.error('gamesView elementi bulunamadı');
+                    
+                    // Son çare olarak body'ye mesaj eklemeyi dene
+                    const bodyMessage = document.createElement('div');
+                    bodyMessage.innerHTML = `
+                        <div style="text-align: center; padding: 20px; margin-top: 30px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 500px; margin: 30px auto;">
+                            <h2 style="color: red; margin-bottom: 15px;">Veri Yükleme Hatası</h2>
+                            <p style="color: #666; margin-bottom: 20px;">${message}</p>
+                            <button id="retryButtonAlt" style="background-color: #ff6b9d; color: white; border: none; border-radius: 5px; padding: 12px 25px; cursor: pointer; font-size: 16px;">
+                                Tekrar Dene
+                            </button>
+                        </div>
+                    `;
+                    document.body.appendChild(bodyMessage);
+                    
+                    const retryButtonAlt = document.getElementById('retryButtonAlt');
+                    if (retryButtonAlt) {
+                        retryButtonAlt.addEventListener('click', () => {
+                            loadGamesData();
+                        });
+                    }
+                }
+            }
+            
+            // Tüm oyun verilerini işle
+            async function processFullGamesData(data) {
+                try {
+                    const loadingIndicator = document.getElementById('loadingIndicator');
+                    
+                    // Veri kontrolü
+                    if (!data) {
+                        console.error("Veri yok veya geçersiz");
+                        throw new Error("Veri yok veya geçersiz");
+                    }
+
+                    // Yükleme göstergesini güncelle
+                    if (loadingIndicator) {
+                        loadingIndicator.innerHTML = '<div class="loading-spinner"></div><p style="margin-left: 15px; color: #ff6b9d; font-weight: bold;">Oyunlar yükleniyor...</p>';
+                    }
+
+                    // Veri içeriğini konsola yazdır
+                    console.log("Yüklenen veri:", JSON.stringify(data).substring(0, 500) + "...");
+
+                    // Veri formatını kontrol et ve işle
+                    let games = Array.isArray(data) ? data : [];
+
+                    if (data.games && Array.isArray(data.games)) {
+                        games = data.games;
+                    }
+
+                    if (!games || games.length === 0) {
+                        console.error("Hiç oyun verisi bulunamadı");
+                        throw new Error("Hiç oyun verisi bulunamadı");
+                    }
+
+                    console.log(`Toplam ${games.length} oyun işleniyor`);
+                    allGamesLoaded = true;
+
+                    // Mevcut kategori verilerini sıfırla
+                    Object.keys(gamesByCategory).forEach(category => {
+                        gamesByCategory[category] = [];
+                    });
+
+                    // Tüm oyunları kategorilere göre sınıflandır
+                    for (let i = 0; i < games.length; i++) {
+                        if (games[i]) {
+                            categorizeGame(games[i]);
+                        }
+                        
+                        // Her 100 oyunda bir arayüzü güncelle ki tarayıcı yanıt vermeyi sürdürsün
+                        if (i % 100 === 0 && loadingIndicator) {
+                            loadingIndicator.innerHTML = `
+                                <div class="loading-spinner"></div>
+                                <p style="margin-left: 15px; color: #ff6b9d; font-weight: bold;">
+                                    Oyunlar yükleniyor... (${i}/${games.length})
+                                </p>
+                            `;
+                            
+                            // Yükleme ilerlemesini konsola yazdır
+                            console.log(`Oyun işleniyor: ${i}/${games.length} (${Math.round(i/games.length*100)}%)`);
+                            
+                            // Async işlemi biraz beklet ki UI güncellenebilsin
+                            await new Promise(resolve => setTimeout(resolve, 0));
+                        }
+                    }
+
+                    // Her kategoride kaç oyun olduğunu göster (hata ayıklama için)
+                    Object.keys(gamesByCategory).forEach(category => {
+                        console.log(`${category} kategorisinde ${gamesByCategory[category].length} oyun var`);
+                    });
+
+                    // Ana sayfayı oluştur
+                    createHomeView();
+                    
+                    // Ana sayfayı göster
+                    showView('homeView');
+                    
+                    // Yükleme göstergesini gizle
+                    if (loadingIndicator) {
+                        loadingIndicator.style.display = 'none';
+                    }
+                    
+                } catch (error) {
+                    console.error("Oyun verileri işlenirken hata:", error);
+                    
+                    const loadingIndicator = document.getElementById('loadingIndicator');
+                    if (loadingIndicator) {
+                        loadingIndicator.innerHTML = `
+                            <div style="text-align: center; padding: 20px;">
+                                <p style="color: red; margin-bottom: 15px;">Veri işlenirken hata oluştu: ${error.message}</p>
+                                <button id="retryButton" style="background-color: #ff6b9d; color: white; border: none; border-radius: 5px; padding: 12px 25px; cursor: pointer; font-size: 16px;">
+                                    Tekrar Dene
+                                </button>
+                            </div>
+                        `;
+                        
+                        const retryButton = document.getElementById('retryButton');
+                        if (retryButton) {
+                            retryButton.addEventListener('click', () => {
+                                loadGamesData();
+                            });
+                        }
+                    } else {
+                        showErrorMessage(`Veri işlenirken hata oluştu: ${error.message}`);
+                    }
+                }
+            }
+
+            // Oyunu kategorilere göre sınıflandır
+            function categorizeGame(game) {
+                // Game objesi kontrolü
+                if (!game || !game.Title) {
+                    console.warn('Geçersiz oyun verisi:', game);
+                    return;
+                }
+                
+                // Oyunun kategorisini belirle
+                let category = 'other'; // Varsayılan kategori
+                
+                // Olası kategori alanlarını kontrol et
+                let possibleCategory = '';
+                
+                if (game.Type && typeof game.Type === 'string') {
+                    possibleCategory = game.Type.toLowerCase();
+                } else if (game.Category && typeof game.Category === 'string') {
+                    possibleCategory = game.Category.toLowerCase();
+                } else if (game.Genre && typeof game.Genre === 'string') {
+                    possibleCategory = game.Genre.toLowerCase();
+                } else if (game.Genres && Array.isArray(game.Genres) && game.Genres.length > 0) {
+                    possibleCategory = game.Genres[0].toLowerCase();
+                } else if (game.Tags && Array.isArray(game.Tags) && game.Tags.length > 0) {
+                    // İlk etiketi kategori olarak kullan
+                    possibleCategory = game.Tags[0].toLowerCase();
+                }
+                
+                // Kategoriyi bilinenlere eşlemeye çalış
+                const categoryMap = {
+                    // İngilizce kategoriler
+                    'action': 'action',
+                    'adventure': 'adventure',
+                    'arcade': 'arcade',
+                    'strategy': 'strategy',
+                    'rpg': 'rpg',
+                    'role playing': 'rpg',
+                    'role-playing': 'rpg',
+                    'simulation': 'simulation',
+                    'sim': 'simulation',
+                    'sports': 'sports',
+                    'racing': 'racing',
+                    'puzzle': 'puzzle',
+                    'shooter': 'shooter',
+                    'fps': 'shooter',
+                    'board': 'board',
+                    'card': 'card',
+                    'casual': 'casual',
+                    
+                    // Türkçe kategoriler
+                    'aksiyon': 'action',
+                    'macera': 'adventure',
+                    'strateji': 'strategy',
+                    'rol yapma': 'rpg',
+                    'simulasyon': 'simulation',
+                    'simülasyon': 'simulation',
+                    'spor': 'sports',
+                    'yarış': 'racing',
+                    'bulmaca': 'puzzle',
+                    'nişancı': 'shooter',
+                    'zeka': 'puzzle',
+                    'masa': 'board',
+                    'kart': 'card',
+                    'gündelik': 'casual'
+                };
+                
+                // Kategoriyi normalize et
+                category = categoryMap[possibleCategory] || 'other';
+                
+                // Kategori listesine ekle
+                if (!gamesByCategory[category]) {
+                    console.warn(`Bilinmeyen kategori: ${category}, 'other' olarak ekleniyor`);
+                    category = 'other';
+                }
+                
+                // Eğer oyun zaten eklenmediyse ekle
+                const existingIndex = gamesByCategory[category].findIndex(g => g.Id === game.Id);
+                if (existingIndex === -1) {
+                    gamesByCategory[category].push(game);
+                } else {
+                    // Oyun zaten varsa güncelle
+                    gamesByCategory[category][existingIndex] = game;
+                }
+                
+                return category;
+            }
+
+            // Ana sayfa görünümünü oluştur
+            function createHomeView(games) {
+                const homeContainer = document.getElementById('gamesView');
+                if (!homeContainer) {
+                    console.error('gamesView elementi bulunamadı');
+                    return;
+                }
+                
+                homeContainer.innerHTML = '';
+                
+                // Ana başlık ekle
+                const header = document.createElement('div');
+                header.className = 'home-header';
+                header.innerHTML = '<h1 class="home-title">Oyun Merkezi</h1><p class="home-subtitle">En iyi oyunları keşfedin</p>';
+                homeContainer.appendChild(header);
+                
+                // Her kategori için bölüm oluştur
+                let categoryCount = 0;
+                
+                // Kategorilere göre bölümler
+                for (const category in gamesByCategory) {
+                    if (gamesByCategory[category].length > 0) {
+                        const categoryDisplayName = getCategoryDisplayName(category);
+                        const section = document.createElement('div');
+                        section.className = 'category-section';
+                        
+                        // Kategori başlığı
+                        const categoryHeader = document.createElement('div');
+                        categoryHeader.className = 'category-header';
+                        categoryHeader.innerHTML = `
+                            <div class="category-title">${categoryDisplayName}</div>
+                            <a href="#" class="view-all" data-category="${category}">Tümünü Gör</a>
+                        `;
+                        
+                        // Oyunları yatay kaydırmalı listele
+                        const gameScroll = document.createElement('div');
+                        gameScroll.className = 'game-scroll';
+                        
+                        // En fazla 10 oyun göster
+                        const gamesToShow = gamesByCategory[category].slice(0, 10);
+                        
+                        // Oyun kartlarını oluştur
+                        gamesToShow.forEach(game => {
+                            const gameCard = createGameCard(game);
+                            if (gameCard) {
+                                gameScroll.appendChild(gameCard);
+                            }
+                        });
+                        
+                        // Kaydırma kontrolleri
+                        const scrollControls = document.createElement('div');
+                        scrollControls.className = 'scroll-controls';
+                        scrollControls.innerHTML = `
+                            <button class="scroll-btn scroll-left" data-target="${category}"><i class="fas fa-chevron-left"></i></button>
+                            <button class="scroll-btn scroll-right" data-target="${category}"><i class="fas fa-chevron-right"></i></button>
+                        `;
+                        
+                        // Bileşenleri birleştir
+                        section.appendChild(categoryHeader);
+                        section.appendChild(gameScroll);
+                        section.appendChild(scrollControls);
+                        
+                        // Kategori bölümünü ekle
+                        homeContainer.appendChild(section);
+                        categoryCount++;
+                        
+                        // Kaydırma düğmelerine tıklama olayları ekle
+                        section.querySelector('.scroll-left').addEventListener('click', function() {
+                            const target = this.getAttribute('data-target');
+                            const scrollElement = document.querySelector(`.category-section:nth-child(${categoryCount}) .game-scroll`);
+                            scrollElement.scrollBy({ left: -400, behavior: 'smooth' });
+                        });
+                        
+                        section.querySelector('.scroll-right').addEventListener('click', function() {
+                            const target = this.getAttribute('data-target');
+                            const scrollElement = document.querySelector(`.category-section:nth-child(${categoryCount}) .game-scroll`);
+                            scrollElement.scrollBy({ left: 400, behavior: 'smooth' });
+                        });
+                        
+                        // Tümünü gör bağlantısına tıklama olayı ekle
+                        section.querySelector('.view-all').addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const category = this.getAttribute('data-category');
+                            // Kategori görünümünü göster
+                            document.getElementById('categoryTitle').textContent = getCategoryDisplayName(category);
+                            
+                            // Kategori görünümündeki oyunları doldur
+                            const categoryGames = gamesByCategory[category] || [];
+                            populateCategoryView(categoryGames);
+                            
+                            // Kategori görünümünü göster
+                            showView('categoryView');
+                        });
+                    }
+                }
+                
+                // Eğer hiç kategori yoksa
+                if (categoryCount === 0) {
+                    homeContainer.innerHTML = `
+                        <div style="text-align: center; padding: 40px;">
+                            <h2 style="color: #ff6b9d; margin-bottom: 20px;">Henüz oyun verisi bulunamadı</h2>
+                            <p style="color: #666; margin-bottom: 20px;">Lütfen daha sonra tekrar deneyin veya veri kaynağını kontrol edin.</p>
+                            <button id="retryButton" style="background-color: #ff6b9d; color: white; border: none; border-radius: 5px; padding: 12px 25px; cursor: pointer; font-size: 16px;">
+                                Tekrar Dene
+                            </button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('retryButton').addEventListener('click', function() {
+                        loadGamesData();
+                    });
+                }
+            }
+
+            // Kategori isimlerini düzgün görüntüleme formatına dönüştür
+            function getCategoryDisplayName(category) {
+                const displayNames = {
+                    'action': 'Aksiyon Oyunları',
+                    'adventure': 'Macera Oyunları',
+                    'puzzle': 'Bulmaca Oyunları',
+                    'shooter': 'Nişancı Oyunları',
+                    'racing': 'Yarış Oyunları',
+                    'sports': 'Spor Oyunları',
+                    'rpg': 'Rol Yapma Oyunları',
+                    'simulation': 'Simülasyon Oyunları',
+                    'strategy': 'Strateji Oyunları',
+                    'other': 'Diğer Oyunlar'
+                };
+                
+                return displayNames[category] || category;
+            }
+
+            // Show the specified view
+            function showView(viewId) {
+                // Tüm görünümleri gizle
+                document.getElementById('homeView').style.display = 'none';
+                document.getElementById('categoryView').style.display = 'none';
+                document.getElementById('gameView').style.display = 'none';
+                
+                // İstenen görünümü göster
+                document.getElementById(viewId).style.display = 'block';
+            }
+
+            // Return to the home view
+            function returnToHome() {
+                showView('homeView');
+            }
+
+            // Return to the category view
+            function returnToGames() {
+                showView('categoryView');
+            }
+            
+            // Kategori görünümünü belirli oyunlarla doldur
+            function populateCategoryView(games) {
+                const gamesGrid = document.getElementById('gamesGrid');
+                if (!gamesGrid) {
+                    console.error('gamesGrid elementi bulunamadı');
+                    return;
+                }
+                
+                // Oyun ızgarasını temizle
+                gamesGrid.innerHTML = '';
+                
+                // Oyunları ekle
+                if (games && games.length > 0) {
+                    games.forEach(game => {
+                        const gameCard = createGameCard(game);
+                        if (gameCard) {
+                            gamesGrid.appendChild(gameCard);
+                        }
+                    });
+                } else {
+                    // Oyun yoksa mesaj göster
+                    gamesGrid.innerHTML = `
+                        <div style="text-align: center; grid-column: 1 / -1; padding: 40px;">
+                            <h3 style="color: #ff6b9d; margin-bottom: 15px;">Bu kategoride henüz oyun bulunmuyor</h3>
+                            <p style="color: #666;">Başka bir kategori seçin veya daha sonra tekrar kontrol edin.</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // Bir oyun için kart oluştur
+            function createGameCard(game) {
+                if (!game || !game.Title) {
+                    console.error('Geçersiz oyun verisi:', game);
+                    return null;
+                }
+                
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.setAttribute('data-id', game.Id || '');
+                
+                // Resim URL'sini belirle
+                let imageUrl = 'assets/placeholder.jpg';
+                if (game.Assets && game.Assets.length > 0) {
+                    imageUrl = game.Assets[0];
+                }
+                
+                // Kart içeriğini oluştur
+                card.innerHTML = `
+                    <div class="game-card-image-container">
+                        <div class="game-card-loading"></div>
+                        <img class="lazy-image" src="assets/placeholder.jpg" data-src="${imageUrl}" alt="${game.Title}" loading="lazy">
+                    </div>
+                    <div class="game-card-info">
+                        <div class="game-card-title">${game.Title}</div>
+                        <span class="game-card-genre">${game.Genres ? game.Genres[0] : 'Oyun'}</span>
+                    </div>
+                `;
+                
+                // Lazy loading işlemleri için
+                const img = card.querySelector('img');
+                img.onload = function() {
+                    this.classList.add('loaded');
+                    card.querySelector('.game-card-loading').style.display = 'none';
+                };
+                
+                img.onerror = function() {
+                    this.src = 'assets/placeholder.jpg';
+                    card.querySelector('.game-card-loading').style.display = 'none';
+                };
+                
+                // Oyun kartına tıklama olayı
+                card.addEventListener('click', function() {
+                    // Oyun görünümüne geç
+                    openGameView(game);
+                });
+                
+                return card;
+            }
+
+            // Oyun görünümünü aç
+            function openGameView(game) {
+                if (!game || !game["Game URL"]) {
+                    console.error('Oyun URL bulunamadı:', game);
+                    alert('Bu oyun için URL bilgisi bulunamadı.');
+                    return;
+                }
+                
+                // Oyun bilgilerini doldur
+                document.getElementById('gameTitle').textContent = game.Title || 'İsimsiz Oyun';
+                document.getElementById('gameDescription').textContent = game.Description || 'Bu oyun için açıklama bulunmuyor.';
+                document.getElementById('gameInstructions').textContent = game.Instructions || 'Özel talimatlar bulunmuyor.';
+                
+                // Etiketleri doldur
+                const tagsContainer = document.getElementById('gameTags');
+                tagsContainer.innerHTML = '';
+                
+                if (game.Tags && game.Tags.length > 0) {
+                    game.Tags.forEach(tag => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = 'game-tag';
+                        tagSpan.textContent = tag;
+                        tagsContainer.appendChild(tagSpan);
+                    });
+                } else if (game.Genres && game.Genres.length > 0) {
+                    game.Genres.forEach(genre => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = 'game-tag';
+                        tagSpan.textContent = genre;
+                        tagsContainer.appendChild(tagSpan);
+                    });
+                }
+                
+                // Oyun iframe'ini ayarla
+                const gameFrame = document.getElementById('gameFrame');
+                gameFrame.src = game["Game URL"];
+                
+                // Oyun görünümünü göster
+                showView('gameView');
+            }
+
+            // Görüntü lazy loading için gözlemci ayarla
+            function setupLazyLoading() {
+                if ('IntersectionObserver' in window) {
+                    const imageObserver = setupImageObserver();
+                    
+                    // Tüm lazy-load resimlerini gözlemle
+                    document.querySelectorAll('img[data-src]').forEach(img => {
+                        observeImage(img, imageObserver);
+                    });
+                } else {
+                    // IntersectionObserver desteklenmeyen tarayıcılar için fallback
+                    loadVisibleImages();
+                    window.addEventListener('scroll', loadVisibleImages);
+                    window.addEventListener('resize', loadVisibleImages);
+                }
+            }
+
+            // Resim gözlemcisi oluştur
+            function setupImageObserver() {
+                return new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            const src = img.getAttribute('data-src');
+                            
+                            if (src) {
+                                img.src = src;
+                                img.onload = function() {
+                                    img.removeAttribute('data-src');
+                                    img.classList.add('loaded');
+                                };
+                                
+                                img.onerror = function() {
+                                    img.src = './assets/images/placeholder.webp';
+                                    img.classList.add('error');
+                                };
+                                
+                                observer.unobserve(img);
+                            }
+                        }
+                    });
+                }, {
+                    rootMargin: '200px 0px',
+                    threshold: 0.01
+                });
+            }
+
+            // Belirli bir resmi gözlemle
+            function observeImage(img, observer) {
+                if (img.getAttribute('data-src')) {
+                    observer.observe(img);
+                }
+            }
+
+            // Görünür resimleri yükle (IntersectionObserver fallback)
+            function loadVisibleImages() {
+                const images = document.querySelectorAll('img[data-src]');
+                const windowHeight = window.innerHeight;
+                
+                images.forEach(img => {
+                    const rect = img.getBoundingClientRect();
+                    
+                    // Ekranda görünüyor mu kontrol et
+                    if (rect.top <= windowHeight + 200 && rect.bottom >= -200) {
+                        const src = img.getAttribute('data-src');
+                        if (src) {
+                            img.src = src;
+                            img.onload = function() {
+                                img.removeAttribute('data-src');
+                                img.classList.add('loaded');
+                            };
+                            
+                            img.onerror = function() {
+                                img.src = './assets/images/placeholder.webp';
+                                img.classList.add('error');
+                            };
+                        }
+                    }
+                });
+            }
+
+            // Sidebar kategori linklerine olay dinleyicileri ekle
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('data-category');
+                    
+                    if (category === 'all') {
+                        // Tüm oyunları göster
+                        showView('homeView');
+                        return;
+                    }
+                    
+                    if (category === 'favorites') {
+                        // Favorileri göster
+                        loadFavoriteGames();
+                        return;
+                    }
+                    
+                    try {
+                        // Yükleme göstergesini göster
+                        const loadingIndicator = document.getElementById('loadingIndicator');
+                        if (loadingIndicator) {
+                            loadingIndicator.style.display = 'flex';
+                            loadingIndicator.innerHTML = `<div class="loading-spinner"></div><p style="margin-left: 15px; color: #ff6b9d; font-weight: bold;">${getCategoryDisplayName(category)} yükleniyor...</p>`;
+                        }
+                        
+                        // API'den kategori oyunlarını al
+                        const response = await fetch(`/api/games/category/${encodeURIComponent(category)}`);
+                        
+                        if (!response.ok) {
+                            throw new Error(`Kategori yükleme hatası: ${response.status}`);
+                        }
+                        
+                        const categoryGames = await response.json();
+                        
+                        // Kategori görünümünü güncelle
+                        document.getElementById('categoryTitle').textContent = getCategoryDisplayName(category);
+                        populateCategoryView(categoryGames);
+                        
+                        // Kategori görünümünü göster
+                        showView('categoryView');
+                        
+                    } catch (error) {
+                        console.error('Kategori oyunları yüklenirken hata:', error);
+                        showErrorMessage(`Kategori oyunları yüklenirken bir hata oluştu: ${error.message}`);
+                    } finally {
+                        // Yükleme göstergesini gizle
+                        if (loadingIndicator) {
+                            loadingIndicator.style.display = 'none';
+                        }
+                    }
+                });
+            });
+            
+            // Favori oyunları yükle
+            function loadFavoriteGames() {
+                // Yerel depolamadan favori oyunları al
+                const favorites = JSON.parse(localStorage.getItem('favoriteGames')) || [];
+                
+                if (favorites.length === 0) {
+                    // Favoriler boşsa mesaj göster
+                    document.getElementById('categoryTitle').textContent = 'Favoriler';
+                    const gamesGrid = document.getElementById('gamesGrid');
+                    gamesGrid.innerHTML = `
+                        <div style="text-align: center; grid-column: 1 / -1; padding: 40px;">
+                            <h3 style="color: #ff6b9d; margin-bottom: 15px;">Henüz favori oyununuz yok</h3>
+                            <p style="color: #666;">Oyun kartlarındaki kalp simgesine tıklayarak favorilerinize oyun ekleyebilirsiniz.</p>
+                        </div>
+                    `;
+                    showView('categoryView');
+                    return;
+                }
+                
+                // Favori oyunları filtrele
+                const favoriteGames = gamesData.filter(game => favorites.includes(game.Id));
+                
+                // Kategori görünümünü güncelle
+                document.getElementById('categoryTitle').textContent = 'Favoriler';
+                populateCategoryView(favoriteGames);
+                
+                // Kategori görünümünü göster
+                showView('categoryView');
+            }
+
+            // Initialize the site
+            loadGamesData();
         });
     </script>
 </body>
