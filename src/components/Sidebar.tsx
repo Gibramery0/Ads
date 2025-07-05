@@ -7,18 +7,18 @@ import { ChevronLeft, ChevronRight, Star, TrendingUp, Instagram, Youtube } from 
 import { cn } from "@/lib/utils"
 import { useCategories } from "@/hooks/useCategories"
 
-// TikTok ve X ikonları için özel bileşenler
-const TikTokIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-    <path d="M19.321 5.562a5.122 5.122 0 0 1-3.414-1.267 5.133 5.133 0 0 1-1.543-2.683H10.5v12.246c0 1.737-1.407 3.144-3.144 3.144a3.143 3.143 0 0 1-3.144-3.144 3.143 3.143 0 0 1 3.144-3.144c.36 0 .704.075 1.02.195v-3.928a7.01 7.01 0 0 0-1.02-.075c-3.858 0-7.02 3.162-7.02 7.02s3.162 7.02 7.02 7.02c3.858 0 7.02-3.162 7.02-7.02V8.979a8.499 8.499 0 0 0 5.139 1.707V6.822c-.06 0-.12 0-.18-.015a5.151 5.151 0 0 1-.994-1.245z"/>
+// X (Twitter) ve TikTok logoları için SVG bileşenleri
+const XLogo = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor"/>
   </svg>
-)
+);
 
-const XIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+const TikTokLogo = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" fill="currentColor"/>
   </svg>
-)
+);
 
 const QUICK_LINKS = [
   { name: "Öne Çıkanlar", icon: Star, href: "/games?featured=true" },
@@ -265,22 +265,22 @@ export default function Sidebar({ isHidden = false, onToggle }: SidebarProps) {
             {/* Social Links */}
             <div className="flex gap-3 justify-center">
               <a
-                href="https://facebook.com"
+                href="https://tiktok.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-blue-600 transition-colors"
-                title="Facebook"
+                className="text-muted-foreground hover:text-[#ff0050] transition-colors"
+                title="TikTok"
               >
-                <TikTokIcon />
+                <TikTokLogo />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://x.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-sky-500 transition-colors"
-                title="Twitter"
+                className="text-muted-foreground hover:text-white transition-colors"
+                title="X (Twitter)"
               >
-                <XIcon />
+                <XLogo />
               </a>
               <a
                 href="https://instagram.com"
@@ -289,7 +289,7 @@ export default function Sidebar({ isHidden = false, onToggle }: SidebarProps) {
                 className="text-muted-foreground hover:text-pink-500 transition-colors"
                 title="Instagram"
               >
-                <TikTokIcon />
+                <Instagram className="h-4 w-4" />
               </a>
               <a
                 href="https://youtube.com"
@@ -298,7 +298,7 @@ export default function Sidebar({ isHidden = false, onToggle }: SidebarProps) {
                 className="text-muted-foreground hover:text-red-500 transition-colors"
                 title="YouTube"
               >
-                <XIcon />
+                <Youtube className="h-4 w-4" />
               </a>
             </div>
 
