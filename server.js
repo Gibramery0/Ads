@@ -151,13 +151,13 @@ app.get('/api/games/category/:category', async (req, res) => {
         const db = client.db(DB_NAME);
         const collection = db.collection(COLLECTION_NAME);
         
-        // Kategori sorgusunu oluştur - veri yapınıza uygun sorgu
+        // Kategori sorgusunu oluştur - büyük küçük harf duyarsız
         const query = {
             $or: [
-                { Genres: category },  // Tam eşleşme
-                { Tags: category },    // Tam eşleşme
-                { Category: category },
-                { Genre: category }
+                { Genres: { $regex: new RegExp(`^${category}$`, 'i') } },  // Tam eşleşme, büyük/küçük harf duyarsız
+                { Tags: { $regex: new RegExp(`^${category}$`, 'i') } },    // Tam eşleşme, büyük/küçük harf duyarsız
+                { Category: { $regex: new RegExp(`^${category}$`, 'i') } },
+                { Genre: { $regex: new RegExp(`^${category}$`, 'i') } }
             ]
         };
         

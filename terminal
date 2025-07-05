@@ -1,0 +1,8 @@
+# Windows'ta çalışan Node.js süreçlerini bul
+tasklist | findstr node
+
+# Bulunan süreçleri sonlandır (PID'leri değiştirin)
+taskkill /F /PID <PID_NUMARASI>
+
+# Veya tüm Node.js süreçlerini sonlandır
+taskkill /F /IM node.exe

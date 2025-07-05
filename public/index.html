@@ -3,30 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oyun Merkezi - MongoDB</title>
+    <meta name="description" content="En iyi ücretsiz oyunlar - Hemen oyna!">
+    <title>Oyun Merkezi - Ücretsiz Online Oyunlar</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-menu" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="/" class="sidebar-item">
+            <i class="fas fa-home"></i>
+            <span>Ana Sayfa</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="all">
+            <i class="fas fa-gamepad"></i>
+            <span>Tüm Oyunlar</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="action">
+            <i class="fas fa-bolt"></i>
+            <span>Aksiyon</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="adventure">
+            <i class="fas fa-mountain"></i>
+            <span>Macera</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="puzzle">
+            <i class="fas fa-puzzle-piece"></i>
+            <span>Bulmaca</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="racing">
+            <i class="fas fa-car"></i>
+            <span>Yarış</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="strategy">
+            <i class="fas fa-chess"></i>
+            <span>Strateji</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="sports">
+            <i class="fas fa-futbol"></i>
+            <span>Spor</span>
+        </a>
+        <a href="#" class="sidebar-item" data-category="io">
+            <i class="fas fa-globe"></i>
+            <span>.IO Oyunları</span>
+        </a>
+    </div>
+
     <header>
         <h1>Oyun Merkezi</h1>
-        <nav>
-            <div id="filter-options">
-                <!-- Filtreler JavaScript ile eklenecek -->
-            </div>
-        </nav>
+        <div class="search-container">
+            <input type="text" id="searchBar" class="search-bar" placeholder="Oyun ara...">
+            <i class="fas fa-search search-icon" id="searchButton"></i>
+        </div>
     </header>
     
-    <div class="container">
-        <div id="games-container">
-            <!-- Oyunlar JavaScript ile eklenecek -->
-            <div class="loading">Oyunlar yükleniyor...</div>
+    <div class="content-container" id="contentContainer">
+        <div class="container">
+            <!-- Filtreler -->
+            <div class="filters">
+                <div class="filter-title">Kategoriler</div>
+                <div id="filter-options">
+                    <!-- Filtre seçenekleri JavaScript ile eklenecek -->
+                </div>
+            </div>
+
+            <!-- Öne Çıkan Oyunlar Bölümü -->
+            <div class="category-section">
+                <div class="category-header">
+                    <div class="category-title">Öne Çıkan Oyunlar</div>
+                    <a href="#" class="view-all" data-category="featured">Tümünü Gör</a>
+                </div>
+                <div class="game-scroll" id="featured-games">
+                    <!-- Oyunlar JavaScript ile eklenecek -->
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Oyunlar yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="scroll-controls">
+                    <button class="scroll-btn scroll-left" data-target="featured-games"><i class="fas fa-chevron-left"></i></button>
+                    <button class="scroll-btn scroll-right" data-target="featured-games"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Popüler Oyunlar Bölümü -->
+            <div class="category-section">
+                <div class="category-header">
+                    <div class="category-title">Popüler Oyunlar</div>
+                    <a href="#" class="view-all" data-category="popular">Tümünü Gör</a>
+                </div>
+                <div class="game-scroll" id="popular-games">
+                    <!-- Oyunlar JavaScript ile eklenecek -->
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Oyunlar yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="scroll-controls">
+                    <button class="scroll-btn scroll-left" data-target="popular-games"><i class="fas fa-chevron-left"></i></button>
+                    <button class="scroll-btn scroll-right" data-target="popular-games"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Ana Oyun Listesi -->
+            <div id="games-container">
+                <!-- Oyunlar JavaScript ile eklenecek -->
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Oyunlar yükleniyor...</p>
+                </div>
+            </div>
         </div>
     </div>
     
     <footer>
-        <p>&copy; 2025 Oyun Merkezi - MongoDB ile Çalışan Uygulama</p>
+        <p>&copy; 2023 Oyun Merkezi. Tüm hakları saklıdır.</p>
     </footer>
     
     <script src="main.js"></script>
+    <script>
+        // Kaydırma düğmeleri için işlevsellik
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar işlevselliği
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const contentContainer = document.getElementById('contentContainer');
+            
+            if (menuToggle && sidebar && contentContainer) {
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    contentContainer.classList.toggle('sidebar-active');
+                });
+                
+                // Sayfa dışına tıklandığında sidebar'ı kapat
+                document.addEventListener('click', function(event) {
+                    if (!sidebar.contains(event.target) && 
+                        !menuToggle.contains(event.target) && 
+                        sidebar.classList.contains('active')) {
+                        sidebar.classList.remove('active');
+                        contentContainer.classList.remove('sidebar-active');
+                    }
+                });
+                
+                // Sidebar kategori tıklamaları
+                document.querySelectorAll('.sidebar-item[data-category]').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const category = this.getAttribute('data-category');
+                        
+                        if (category === 'all') {
+                            // Tüm oyunları göster
+                            loadGames();
+                        } else {
+                            // Belirli kategorideki oyunları göster
+                            loadGamesByGenre(category);
+                        }
+                        
+                        // Mobil görünümde sidebar'ı kapat
+                        if (window.innerWidth <= 768) {
+                            sidebar.classList.remove('active');
+                            contentContainer.classList.remove('sidebar-active');
+                        }
+                    });
+                });
+            }
+            
+            // Arama düğmesine tıklama olayı
+            const searchButton = document.getElementById('searchButton');
+            const searchBar = document.getElementById('searchBar');
+            
+            if (searchButton && searchBar) {
+                searchButton.addEventListener('click', function() {
+                    if (searchBar.value.trim().length > 1) {
+                        handleSearch();
+                    }
+                });
+            }
+            
+            // Kaydırma düğmelerine tıklama olayları ekle
+            document.querySelectorAll('.scroll-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    const container = document.getElementById(target);
+                    const scrollAmount = 300; // Kaydırma miktarı
+                    
+                    if (this.classList.contains('scroll-left')) {
+                        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                    } else {
+                        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            // "Tümünü Gör" bağlantılarına tıklama olayları ekle
+            document.querySelectorAll('.view-all').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('data-category');
+                    
+                    // Tüm oyunları filtreleyerek göster
+                    if (category === 'featured') {
+                        // Öne çıkan oyunları göster
+                        loadGames();
+                    } else if (category === 'popular') {
+                        // Popüler oyunları göster
+                        loadGamesByGenre('adventure');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html> 

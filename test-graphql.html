@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GraphQL Test</title>
+</head>
+<body>
+    <h1>GraphQL Test</h1>
+    <button onclick="testGraphQL()">Test GraphQL</button>
+    <div id="result"></div>
+
+    <script>
+        async function testGraphQL() {
+            try {
+                const response = await fetch('http://localhost:4000/graphql', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: `
+                            query {
+                                games(limit: 3) {
+                                    id
+                                    title
+                                    category
+                                    thumbnail
+                                }
+                            }
+                        `
+                    })
+                });
+
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

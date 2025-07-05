@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manyak Oyunlar - Ücretsiz Online Oyunlar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            min-height: 100vh;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-mode {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Layout */
+        .app-container {
+            display: block;
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 60px;
+            background: #2d2d2d;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow: hidden;
+            z-index: 999;
+            transition: width 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+            top: 60px;
+            left: 0;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        body.light-mode .sidebar {
+            background: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar:hover {
+            overflow-y: auto;
+        }
+
+        .sidebar:hover {
+            width: 250px;
+        }
+
+        .sidebar .sidebar-header .logo-text {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar:hover .sidebar-header .logo-text {
+            opacity: 1;
+        }
+
+        .sidebar .nav-item-text {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar:hover .nav-item-text {
+            opacity: 1;
+        }
+
+        .sidebar .nav-section-title {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar:hover .nav-section-title {
+            opacity: 1;
+        }
+
+        .sidebar .sidebar-toggle {
+            display: none;
+        }
+
+        /* Sidebar header kaldırıldı */
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .logo i {
+            font-size: 1.6rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 107, 53, 0.1);
+            color: #ff6b35;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-toggle:hover {
+            background: #f0f0f0;
+            color: #ff6b35;
+        }
+
+        .sidebar-nav {
+            padding: 0.5rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.65rem;
+            font-weight: bold;
+            color: #999;
+            text-transform: uppercase;
+            padding: 0 0.5rem;
+            margin-bottom: 0.2rem;
+            text-align: center;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.5rem;
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            white-space: nowrap;
+            font-size: 0.8rem;
+        }
+
+        body.light-mode .nav-item {
+            color: #333;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(255, 107, 53, 0.1);
+            border-left-color: #ff6b35;
+            color: #ff6b35;
+        }
+
+        body.light-mode .nav-item:hover,
+        body.light-mode .nav-item.active {
+            background: #f8f9fa;
+        }
+
+        .nav-item i {
+            width: 14px;
+            text-align: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+
+        .nav-item-text {
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar:not(:hover) .nav-item {
+            justify-content: center;
+            padding: 0.4rem 0.5rem;
+        }
+
+        .sidebar:not(:hover) .nav-item i {
+            margin: 0;
+        }
+
+        /* Header */
+        .header {
+            background: #1a1d29;
+            padding: 0.75rem 1.5rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            transition: background-color 0.3s ease;
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
+
+        body.light-mode .header {
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            height: 100%;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-toggle-btn {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            color: #ff6b35;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            height: 44px;
+        }
+
+        body.light-mode .sidebar-toggle-btn {
+            background: rgba(255, 107, 53, 0.1);
+            border-color: rgba(255, 107, 53, 0.3);
+            color: #ff6b35;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: #ff6b35;
+            color: white;
+            border-color: #ff6b35;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 300px;
+            position: relative;
+            margin: 0 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+        }
+
+        body.light-mode .search-input {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .search-input::placeholder {
+            color: rgba(224, 224, 224, 0.7);
+        }
+
+        body.light-mode .search-input::placeholder {
+            color: rgba(51, 51, 51, 0.7);
+        }
+
+        .search-input:focus {
+            border-color: #ff6b35;
+        }
+
+        body.light-mode .search-input:focus {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .header-btn {
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        body.light-mode .header-btn {
+            background: rgba(0, 0, 0, 0.05);
+            color: #333;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .header-btn:hover {
+            background: #ff6b35;
+            color: white;
+            border-color: #ff6b35;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0e0e0;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            height: 44px;
+            backdrop-filter: blur(10px);
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .theme-toggle:hover {
+            background: #ff6b35;
+            color: white;
+            border-color: #ff6b35;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 60px;
+            margin-top: 60px;
+            background: #1a1a1a;
+            min-height: calc(100vh - 60px);
+            transition: margin-left 0.3s ease, background-color 0.3s ease;
+            width: calc(100% - 60px);
+            position: relative;
+        }
+
+        .main-content.sidebar-hidden {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        body.light-mode .main-content {
+            background: #f5f5f5;
+        }
+
+        .content-container {
+            padding: 2rem;
+            width: 100%;
+            max-width: none;
+            margin: 0;
+        }
+
+        /* Page Title */
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Filter Tabs kaldırıldı */
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .game-card {
+            background: #2d2d2d;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            aspect-ratio: 4/3;
+        }
+
+        body.light-mode .game-card {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        body.light-mode .game-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-image {
+            transform: scale(1.05);
+        }
+
+        .game-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-overlay {
+            transform: translateY(0);
+        }
+
+        .game-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            color: white;
+            line-height: 1.3;
+        }
+
+        /* Play overlay kaldırıldı */
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Favorite Button */
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .favorite-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .favorite-btn i {
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .favorite-btn.active i {
+            color: #e74c3c;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 250px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid #27ae60;
+        }
+
+        .notification.success i {
+            color: #27ae60;
+        }
+
+        .notification.error {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .notification.error i {
+            color: #e74c3c;
+        }
+
+        .notification.info {
+            border-left: 4px solid #3498db;
+        }
+
+        .notification.info i {
+            color: #3498db;
+        }
+
+        /* Game Page */
+        .game-page {
+            display: none;
+            margin-left: 60px;
+            margin-top: 60px;
+            background: #1a1a1a;
+            min-height: calc(100vh - 60px);
+            transition: margin-left 0.3s ease, background-color 0.3s ease;
+            width: calc(100% - 60px);
+            position: relative;
+        }
+
+        .game-page.sidebar-hidden {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        .game-page.active {
+            display: block;
+        }
+
+        body.light-mode .game-page {
+            background: white;
+        }
+
+        /* Game header kaldırıldı - main header kullanılıyor */
+
+        .back-btn {
+            background: #ff6b35;
+            color: white;
+            border: 1px solid #ff6b35;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .back-btn:hover {
+            background: #e55a2b;
+            border-color: #e55a2b;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+        }
+
+        .game-title-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e0e0e0;
+            transition: color 0.3s ease;
+        }
+
+        body.light-mode .game-title-header {
+            color: #333;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 80px);
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        .game-content-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .game-iframe-container {
+            flex: 1;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .game-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .ad-space {
+            width: 160px;
+            height: 600px;
+            background: #2d2d2d;
+            border: 2px dashed #555;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.9rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        body.light-mode .ad-space {
+            background: #f0f0f0;
+            border-color: #ddd;
+            color: #999;
+        }
+
+        .game-info-section {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-top: 1px solid #404040;
+            transition: background-color 0.3s ease;
+        }
+
+        body.light-mode .game-info-section {
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+
+        .game-info-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .game-description-section h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .game-description-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-meta-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item {
+            background: #404040;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #555;
+            transition: background-color 0.3s ease;
+        }
+
+        body.light-mode .meta-item {
+            background: white;
+            border: 1px solid #eee;
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        body.light-mode .meta-label {
+            color: #666;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: #e0e0e0;
+            transition: color 0.3s ease;
+        }
+
+        body.light-mode .meta-value {
+            color: #333;
+        }
+
+        .game-tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-tag-item {
+            background: #ff6b35;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .game-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .action-btn {
+            padding: 10px 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .action-btn.favorite.active {
+            background: #ff6b35;
+            color: white;
+            border-color: #ff6b35;
+        }
+
+        /* Loading */
+        .game-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        /* Lazy loading images */
+        .game-image.lazy {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: #f0f0f0;
+        }
+
+        .game-image {
+            background-color: #f8f9fa;
+        }
+
+        /* Error state for images */
+        .game-image.error {
+            background: #ff6b35;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .game-image.error::after {
+            content: '🎮';
+            font-size: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                width: 250px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar:hover {
+                width: 250px;
+            }
+
+            .main-content,
+            .game-page {
+                margin-left: 0;
+            }
+
+            .header {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .content-container {
+                padding: 1rem;
+            }
+
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .game-card {
+                aspect-ratio: 1;
+            }
+
+            .game-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .game-iframe-container {
+                padding-bottom: 75%; /* 4:3 aspect ratio for mobile */
+            }
+
+            .game-info-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .game-meta-info {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 0.5rem;
+            }
+
+            .filter-tab {
+                flex-shrink: 0;
+            }
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #e0e0e0;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        body.light-mode .mobile-menu-btn {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-toggle-btn {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .header-container {
+                gap: 0.75rem;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .search-container {
+                margin: 0;
+                max-width: none;
+                flex: 1;
+            }
+
+            .search-input {
+                font-size: 14px;
+                padding: 10px 40px 10px 15px;
+            }
+
+            .header-actions {
+                gap: 0.5rem;
+            }
+
+            .header-btn span {
+                display: none;
+            }
+
+            .header-btn {
+                padding: 10px;
+                min-width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Sidebar header kaldırıldı -->
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <a href="#" class="nav-item active" id="homeBtn">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-item-text">Ana Sayfa</span>
+                    </a>
+                    <a href="#" class="nav-item" id="newBtn">
+                        <i class="fas fa-star"></i>
+                        <span class="nav-item-text">Yeni Oyunlar</span>
+                    </a>
+                    <a href="#" class="nav-item" id="trendingBtn">
+                        <i class="fas fa-fire"></i>
+                        <span class="nav-item-text">Trend Oyunlar</span>
+                    </a>
+                    <a href="#" class="nav-item" id="favoritesBtn">
+                        <i class="fas fa-heart"></i>
+                        <span class="nav-item-text">Favoriler</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Kategoriler</div>
+                    <div id="sidebarCategories">
+                        <!-- Kategoriler JavaScript ile eklenecek -->
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-container">
+                    <div class="header-left">
+                        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Menüyü Aç/Kapat">
+                            <i class="fas fa-bars"></i>
+                        </button>
+
+                        <button class="mobile-menu-btn" id="mobileMenuBtn">
+                            <i class="fas fa-bars"></i>
+                        </button>
+
+                        <div class="logo">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Manyak Oyunlar</span>
+                        </div>
+                    </div>
+
+                    <div class="header-right">
+                        <div class="search-container">
+                            <input type="text" class="search-input" id="searchInput" placeholder="Search">
+                        </div>
+
+                        <div class="header-actions">
+                            <button class="back-btn" id="backBtn" style="display: none;" title="Ana Sayfaya Dön">
+                                <i class="fas fa-arrow-left"></i>
+                                Geri
+                            </button>
+                            <button class="header-btn" id="randomBtn" title="Rastgele Oyun Oyna">
+                                <i class="fas fa-dice"></i>
+                                Şansını Dene
+                            </button>
+                            <button class="theme-toggle" id="themeToggle" title="Tema Değiştir (Açık/Koyu)">
+                                <i class="fas fa-sun"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Container -->
+            <div class="content-container">
+                <h1 class="page-title" id="pageTitle">Tüm Oyunlar</h1>
+                <p class="page-subtitle" id="pageSubtitle">En iyi ücretsiz online oyunları keşfedin</p>
+
+                <!-- Filter Tabs kaldırıldı -->
+
+                <!-- Loading -->
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Oyunlar yükleniyor...</p>
+                </div>
+
+                <!-- Games Grid -->
+                <div class="games-grid" id="gamesGrid" style="display: none;">
+                </div>
+            </div>
+        </main>
+
+        <!-- Game Page -->
+        <div class="game-page" id="gamePage">
+
+            <div class="game-container">
+                <div class="game-content-wrapper">
+                    <div class="ad-space">
+                        <div>
+                            <i class="fas fa-ad"></i><br>
+                            Reklam Alanı<br>
+                            160x600
+                        </div>
+                    </div>
+
+                    <div class="game-iframe-container">
+                        <div class="game-loading" id="gameLoading">
+                            <div class="loading-spinner"></div>
+                            <p>Oyun yükleniyor...</p>
+                        </div>
+                        <iframe class="game-iframe" id="gameIframe" src=""></iframe>
+                    </div>
+
+                    <div class="ad-space">
+                        <div>
+                            <i class="fas fa-ad"></i><br>
+                            Reklam Alanı<br>
+                            160x600
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-info-section">
+                    <div class="game-info-grid">
+                        <div class="game-description-section">
+                            <h3>Oyun Hakkında</h3>
+                            <p id="gameDescription">Oyun açıklaması...</p>
+
+                            <div class="game-meta-info">
+                                <div class="meta-item">
+                                    <div class="meta-label">Kategori</div>
+                                    <div class="meta-value" id="gameCategory">-</div>
+                                </div>
+                            </div>
+
+                            <h3>Etiketler</h3>
+                            <div class="game-tags-list" id="gameTagsList">
+                            </div>
+                        </div>
+
+                        <div class="game-actions-section">
+                            <div class="game-actions">
+                                <button class="action-btn favorite" id="favoriteBtn">
+                                    <i class="fas fa-heart"></i>
+                                    Favorilere Ekle
+                                </button>
+                                <button class="action-btn" id="fullscreenBtn">
+                                    <i class="fas fa-expand"></i>
+                                    Tam Ekran
+                                </button>
+                                <button class="action-btn" id="shareBtn">
+                                    <i class="fas fa-share"></i>
+                                    Paylaş
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="crazy-games.js"></script>
+</body>
+</html>

@@ -1,88 +1,77 @@
-# Oyun Merkezi - MongoDB Entegrasyonu
+# Oyun Merkezi
 
-Bu proje, JSON dosyaları yerine MongoDB veritabanını kullanan bir oyun portalı uygulamasıdır.
+Modern, performanslı ve ölçeklenebilir bir oyun portalı web uygulaması.
+
+## Teknoloji Yığını
+
+- **Frontend:** Next.js 14, React, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend:** Node.js, Express.js (API Routes)
+- **Veritabanı:** MongoDB Atlas, Mongoose
+- **Hosting:** Vercel
+
+## Özellikler
+
+- Binlerce oyunun listelendiği modern ve hızlı bir arayüz
+- Oyunları iframe ile oynama imkanı
+- Kategori filtreleme ve arama özellikleri
+- SEO dostu, SSR destekli yapı
+- Karanlık/Aydınlık tema desteği
+- Tamamen duyarlı (responsive) tasarım
+- MongoDB'den oyun verilerini çekme
 
 ## Kurulum
 
-1. MongoDB 8.0'ı bilgisayarınıza kurun veya bir MongoDB Atlas hesabı oluşturun.
-2. Proje dizininde aşağıdaki komutu çalıştırarak gerekli paketleri yükleyin:
+1. Projeyi klonlayın:
+```bash
+git clone https://github.com/kullaniciadi/oyun-merkezi.git
+cd oyun-merkezi
+```
 
+2. Bağımlılıkları yükleyin:
 ```bash
 npm install
 ```
 
-3. `.env` dosyasını oluşturun ve MongoDB bağlantı bilgilerinizi ayarlayın:
-
+3. `.env.local` dosyası oluşturun:
 ```
-MONGODB_URI=mongodb://localhost:27017/gamesDB
-DB_NAME=gamesDB
-COLLECTION_NAME=games
-PORT=3000
+MONGODB_URI=mongodb+srv://kullaniciadi:sifre@cluster0.mongodb.net/oyun-merkezi
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
 ```
 
-4. MongoDB'de `gamesDB` veritabanı ve `games` koleksiyonu oluşturun ve verilerinizi içe aktarın. Verileri manuel olarak MongoDB arayüzünden ekleyebilir veya şu komutu kullanabilirsiniz:
-
-```bash
-npm run setup-db
-```
-
-## Kullanım
-
-Uygulamayı başlatmak için:
-
-```bash
-npm start
-```
-
-Geliştirme modunda çalıştırmak için:
-
+4. Geliştirme sunucusunu başlatın:
 ```bash
 npm run dev
 ```
 
-Uygulama varsayılan olarak http://localhost:3000 adresinde çalışacaktır.
+5. Tarayıcınızda [http://localhost:3000](http://localhost:3000) adresine gidin.
 
-## Özellikler
+## Proje Yapısı
 
-- MongoDB 8.0 ile veri depolama ve yönetim
-- Kategorilere göre oyun filtreleme
-- Gerçek zamanlı arama
-- Mobil uyumlu tasarım
-- Favorilere ekleme özelliği
-
-## API Endpointleri
-
-- `GET /api/games`: Tüm oyunları getirir
-- `GET /api/games/category/:category`: Belirtilen kategorideki oyunları getirir
-- `GET /api/games/search?query=arama_terimi`: Oyunları arar
-
-## Veri Yapısı
-
-MongoDB'de saklanan oyun verilerinin temel yapısı:
-
-```json
-{
-  "_id": {
-    "$oid": "6838704e237e18965c49f45f"
-  },
-  "Id": "a55c9cc9c21e4fc683c8c6857f3d0c75",
-  "Title": "Fireboy and Watergirl 1 Forest Temple",
-  "Developer": "Agame",
-  "Description": "Oyun açıklaması",
-  "Sub Type": "Javascript",
-  "Game URL": "https://example.com/game",
-  "Genres": ["Adventure"],
-  "Tags": ["2d", "2players", "logic", "platformer"],
-  "Assets": ["https://example.com/image.jpg"],
-  "Instructions": "Move with WASD and the arrow keys.",
-  "Mobile Ready": ["For IOS", "For Android"],
-  "Age Group": ["Kids", "Teens"],
-  "Gender": ["Male", "Female"]
-}
+```
+oyun-merkezi/
+├── public/           # Statik dosyalar
+├── src/
+│   ├── app/          # App Router sayfaları
+│   ├── components/   # React bileşenleri
+│   ├── lib/          # Yardımcı fonksiyonlar ve veritabanı bağlantısı
+│   │   ├── db.ts     # MongoDB bağlantısı
+│   │   ├── models/   # Mongoose modelleri
+│   │   └── utils.ts  # Yardımcı fonksiyonlar
+│   └── styles/       # Global CSS
+├── .env.local        # Ortam değişkenleri
+├── next.config.js    # Next.js yapılandırması
+├── tailwind.config.js # Tailwind yapılandırması
+└── package.json      # Proje bağımlılıkları
 ```
 
-## Notlar
+## İleride Eklenecek Özellikler
 
-- Sistem ilk kez çalıştırıldığında, `.env` dosyasında belirtilen MongoDB bağlantısı kullanılır.
-- `db-setup.js` scripti, JSON dosyasındaki verileri MongoDB'ye aktarır.
-- MongoDB 8.0'da, koleksiyondaki her kayıt için otomatik olarak eklenen `_id` alanı kullanılabilir. 
+- Kullanıcı girişi ve kayıt sistemi
+- Favori oyunlar ve oyun geçmişi
+- Admin paneli
+- Oyun yorumları ve puanlama sistemi
+- Daha fazla oyun kategorisi ve filtre seçenekleri
+
+## Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır. 
