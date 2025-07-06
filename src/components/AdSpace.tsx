@@ -76,7 +76,7 @@ export default function AdSpace({
       {process.env.NODE_ENV === 'development' ? (
         <div className="text-center p-4">
           <div className="text-sm text-muted-foreground mb-2">
-            📢 Reklam Alanı
+            📢 Ads Zone
           </div>
           <div className="text-xs text-muted-foreground">
             {format} • {slot}

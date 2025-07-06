@@ -1,8 +1,8 @@
 {
+  "/page": "app/page.js",
   "/game/[id]/page": "app/game/[id]/page.js",
   "/privacy/page": "app/privacy/page.js",
-  "/page": "app/page.js",
-  "/api/games/[id]/route": "app/api/games/[id]/route.js",
+  "/about/page": "app/about/page.js",
   "/api/games/route": "app/api/games/route.js",
-  "/terms/page": "app/terms/page.js"
+  "/search/page": "app/search/page.js"
 }

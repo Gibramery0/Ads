@@ -110,12 +110,6 @@ export default function CategorySection({ title, games, categorySlug, icon }: Ca
             </Link>
           )}
         </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">
-            ({games.length} {games.length >= 50 ? '(50 gösteriliyor)' : 'oyun'})
-          </span>
-        </div>
       </div>
 
       {/* Games Grid with Pagination */}

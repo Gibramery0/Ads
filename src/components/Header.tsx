@@ -25,8 +25,17 @@ export default function Header({ onSidebarToggle }: HeaderProps) {
   
   const searchInputRef = useRef<HTMLInputElement>(null)
   
-  // Scroll olayını dinle
+  // Oyun sayfasında olup olmadığını kontrol et
+  const isGamePage = pathname.startsWith('/game/')
+  
+  // Scroll olayını dinle - sadece oyun sayfasında
   useEffect(() => {
+    // Ana sayfada header'ı her zaman göster
+    if (!isGamePage) {
+      setHideHeader(false)
+      return
+    }
+    
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       
@@ -44,7 +53,7 @@ export default function Header({ onSidebarToggle }: HeaderProps) {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  }, [isGamePage])
   
   // Arama işlevi
   const handleSearch = (e: FormEvent) => {
@@ -95,7 +104,7 @@ export default function Header({ onSidebarToggle }: HeaderProps) {
   };
   
   return (
-    <header className={`border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-transform duration-300 ${hideHeader ? '-translate-y-full' : 'translate-y-0'}`}>
+    <header className={`border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-transform duration-300 ${isGamePage && hideHeader ? '-translate-y-full' : 'translate-y-0'}`}>
       <div className="flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
           {/* Sidebar Toggle Button */}

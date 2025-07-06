@@ -52,8 +52,6 @@ export default function GamePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isLinkCopied, setIsLinkCopied] = useState(false)
-  const [hideHeader, setHideHeader] = useState(false)
-  const lastScrollY = useRef(0)
   
   // Kategori oyunları için state
   const [categoryGames, setCategoryGames] = useState<CategoryGame[]>([])
@@ -63,28 +61,6 @@ export default function GamePage() {
 
   // Oynanma sayısı için sabit değer
   const playCount = useRef<number>(0);
-
-  // Scroll pozisyonunu takip et
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      
-      // Aşağı kaydırma durumunda header'ı gizle, yukarı kaydırma durumunda göster
-      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-        setHideHeader(true)
-      } else {
-        setHideHeader(false)
-      }
-      
-      lastScrollY.current = currentScrollY
-    }
-    
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
 
   // REST API ile oyun verilerini getir
   useEffect(() => {
@@ -265,9 +241,10 @@ export default function GamePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className={`sticky top-0 z-10 bg-background/95 backdrop-blur transition-transform duration-300 border-b ${hideHeader ? '-translate-y-full' : 'translate-y-0'}`}>
-        <div className="container mx-auto px-4 py-2">
+      {/* Oyun İçeriği */}
+      <div className="container mx-auto px-2 pt-4">
+        {/* Oyun Başlığı ve Bilgileri */}
+        <div className="mb-4 pb-4 border-b">
           <div className="flex items-center gap-3">
             <Link href="/">
               <Button variant="outline" size="sm" className="h-8 px-2 py-1">
@@ -283,10 +260,7 @@ export default function GamePage() {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Main Content with Ads */}
-      <div className="container mx-auto px-2 pt-4">
+        
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-2">
           {/* Sol Reklam Alanı */}
           <div className="hidden xl:block xl:col-span-2">

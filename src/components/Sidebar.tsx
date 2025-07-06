@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
-import { ChevronLeft, ChevronRight, Star, TrendingUp, Instagram, Youtube } from "lucide-react"
+import { Instagram, Youtube } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useCategories } from "@/hooks/useCategories"
 
@@ -20,10 +20,8 @@ const TikTokLogo = () => (
   </svg>
 );
 
-const QUICK_LINKS = [
-  { name: "Öne Çıkanlar", icon: Star, href: "/games?featured=true" },
-  { name: "Popüler", icon: TrendingUp, href: "/games?popular=true" },
-]
+// Öne Çıkanlar ve Popüler kısımları kaldırıldı
+const QUICK_LINKS: any[] = []
 
 interface SidebarProps {
   isHidden?: boolean
@@ -125,41 +123,43 @@ export default function Sidebar({ isHidden = false, onToggle }: SidebarProps) {
           isExpanded ? "overflow-y-auto custom-scrollbar px-3 py-3" : "overflow-hidden px-3 py-3"
         )}
       >
-        {/* Quick Links */}
-        <div className="space-y-1">
-          {QUICK_LINKS.map((link) => {
-            const Icon = link.icon
-            const active = isActive(link.href)
+        {/* Quick Links - Öne Çıkanlar ve Popüler kaldırıldı */}
+        {QUICK_LINKS.length > 0 && (
+          <div className="space-y-1">
+            {QUICK_LINKS.map((link) => {
+              const Icon = link.icon
+              const active = isActive(link.href)
 
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "sidebar-item group flex items-center rounded-md text-xs transition-all duration-150 hover:bg-accent relative overflow-hidden h-7",
-                  active ? "bg-accent text-accent-foreground font-medium active" : "text-muted-foreground",
-                )}
-                title={isMinimized ? link.name : undefined}
-              >
-                <div className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center">
-                  <Icon className="h-3.5 w-3.5 transition-all duration-150 group-hover:scale-110" />
-                </div>
-                {isExpanded && (
-                  <span className="pl-8 transition-all duration-150 group-hover:translate-x-1 group-hover:opacity-70 whitespace-nowrap">
-                    {link.name}
-                  </span>
-                )}
-                {/* Shimmer effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 transform -skew-x-12" />
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150 -z-10" />
-              </Link>
-            )
-          })}
-        </div>
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "sidebar-item group flex items-center rounded-md text-xs transition-all duration-150 hover:bg-accent relative overflow-hidden h-7",
+                    active ? "bg-accent text-accent-foreground font-medium active" : "text-muted-foreground",
+                  )}
+                  title={isMinimized ? link.name : undefined}
+                >
+                  <div className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center">
+                    <Icon className="h-3.5 w-3.5 transition-all duration-150 group-hover:scale-110" />
+                  </div>
+                  {isExpanded && (
+                    <span className="pl-8 transition-all duration-150 group-hover:translate-x-1 group-hover:opacity-70 whitespace-nowrap">
+                      {link.name}
+                    </span>
+                  )}
+                  {/* Shimmer effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 transform -skew-x-12" />
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150 -z-10" />
+                </Link>
+              )
+            })}
+          </div>
+        )}
 
-        {/* Divider */}
-        {isExpanded && (
+        {/* Divider - Sadece QUICK_LINKS varsa göster */}
+        {isExpanded && QUICK_LINKS.length > 0 && (
           <div className="relative my-3">
             <div className="absolute inset-0 flex items-center">
               <div className="w-3/4 border-t border-border"></div>
