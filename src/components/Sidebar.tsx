@@ -174,7 +174,7 @@ export default function Sidebar({ isHidden = false, onToggle }: SidebarProps) {
             href="/"
             className={cn(
               "sidebar-item group flex items-center rounded-md text-xs transition-all duration-150 hover:bg-accent relative overflow-hidden h-7",
-              isActive("/", "all") ? "bg-accent text-accent-foreground font-medium active" : "text-muted-foreground",
+              isActive("/", "all") ? "bg-accent text-accent-foreground font-medium active" : "text-white",
             )}
             title={isMinimized ? "Tüm Oyunlar" : undefined}
           >
@@ -182,7 +182,7 @@ export default function Sidebar({ isHidden = false, onToggle }: SidebarProps) {
               <span className="text-sm transition-all duration-150 group-hover:scale-110">🎮</span>
             </div>
             {isExpanded && (
-              <span className="pl-8 transition-all duration-150 group-hover:translate-x-1 group-hover:opacity-70 whitespace-nowrap">
+              <span className="pl-8 transition-all duration-150 group-hover:translate-x-2 group-hover:opacity-70 whitespace-nowrap">
                 Tüm Oyunlar
               </span>
             )}
@@ -202,17 +202,16 @@ export default function Sidebar({ isHidden = false, onToggle }: SidebarProps) {
                 href={category.href}
                 className={cn(
                   "sidebar-item group flex items-center rounded-md text-xs transition-all duration-150 hover:bg-accent relative overflow-hidden h-7",
-                  active ? "bg-accent text-accent-foreground font-medium active" : "text-muted-foreground",
+                  active ? "bg-accent text-accent-foreground font-medium active" : "text-white",
                 )}
-                title={isMinimized ? `${category.name} (${category.count})` : undefined}
+                title={isMinimized ? category.name : undefined}
               >
                 <div className="absolute left-2 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center">
                   <span className="text-sm transition-all duration-150 group-hover:scale-110">{category.icon}</span>
                 </div>
                 {isExpanded && (
-                  <span className="pl-8 transition-all duration-150 group-hover:translate-x-1 group-hover:opacity-70 whitespace-nowrap">
+                  <span className="pl-8 transition-all duration-150 group-hover:translate-x-2 group-hover:opacity-70 whitespace-nowrap">
                     {category.name}
-                    <span className="text-[10px] opacity-60 ml-1">({category.count})</span>
                   </span>
                 )}
                 {/* Shimmer effect */}

@@ -3,6 +3,5 @@
   "/game/[id]/page": "app/game/[id]/page.js",
   "/privacy/page": "app/privacy/page.js",
   "/about/page": "app/about/page.js",
-  "/api/games/route": "app/api/games/route.js",
   "/search/page": "app/search/page.js"
 }
