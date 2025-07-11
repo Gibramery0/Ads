@@ -74,4 +74,4 @@ oyun-merkezi/
 
 ## Lisans
 
-Bu proje MIT lisansı altında lisanslanmıştır. 
+Bu proje MIT lisansı altında lisanslanmıştır. "# Ads_v2" 

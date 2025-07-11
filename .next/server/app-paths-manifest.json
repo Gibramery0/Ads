@@ -1,1 +1,24 @@
-{}
+{
+  "/_not-found": "app/_not-found.js",
+  "/about/page": "app/about/page.js",
+  "/admin/games/add/page": "app/admin/games/add/page.js",
+  "/admin/login/page": "app/admin/login/page.js",
+  "/admin/games/page": "app/admin/games/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/games/[id]/route": "app/api/games/[id]/route.js",
+  "/api/categories/route": "app/api/categories/route.js",
+  "/api/games/route": "app/api/games/route.js",
+  "/api/search/route": "app/api/search/route.js",
+  "/auth/forgot-password/page": "app/auth/forgot-password/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/auth/register/page": "app/auth/register/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/game/[id]/page": "app/game/[id]/page.js",
+  "/games/[id]/page": "app/games/[id]/page.js",
+  "/games/page": "app/games/page.js",
+  "/page": "app/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/terms/page": "app/terms/page.js",
+  "/search/page": "app/search/page.js"
+}
