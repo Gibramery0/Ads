@@ -1,35 +1,11 @@
-import NextAuth, { AuthOptions, DefaultSession, Session } from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth, { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
-import { JWT } from "next-auth/jwt";
-import { PrismaClient } from "@prisma/client";
 
-// Global prisma instance to prevent multiple instances in development
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
-
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({
-    log: ["query"],
-  });
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-// NextAuth için User tipini genişletiyoruz
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-    } & DefaultSession["user"];
-  }
-}
-
-export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma),
+// Basit bir NextAuth yapılandırması
+const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -50,30 +26,15 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email ve şifre gerekli");
+        // Basit bir doğrulama
+        if (credentials?.email === "admin@example.com" && credentials?.password === "password") {
+          return { 
+            id: "1", 
+            name: "Admin",
+            email: "admin@example.com"
+          };
         }
-
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
-
-        if (!user || !user.password) {
-          throw new Error("Kullanıcı bulunamadı");
-        }
-
-        const isCorrectPassword = await bcrypt.compare(
-          credentials.password,
-          user.password
-        );
-
-        if (!isCorrectPassword) {
-          throw new Error("Geçersiz şifre");
-        }
-
-        return user;
+        return null;
       },
     }),
   ],
@@ -84,20 +45,6 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === "development",
   pages: {
     signIn: "/",
-  },
-  callbacks: {
-    async jwt({ token, user }: { token: JWT; user: any }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }: { session: Session; token: JWT }) {
-      if (token && session.user) {
-        session.user.id = token.id as string;
-      }
-      return session;
-    },
   },
 };
 

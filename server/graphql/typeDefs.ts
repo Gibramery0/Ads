@@ -1,19 +1,23 @@
-const { gql } = require('graphql-tag');
+const { gql } = require('apollo-server');
 
-const typeDefs = gql`
+// Rename to avoid duplicate declaration
+const graphqlTypeDefs = gql`
   type Game {
     id: ID!
     title: String!
-    description: String!
-    category: String!
-    tags: [String!]!
+    description: String
+    category: String
+    tags: [String]
     url: String!
-    thumbnail: String!
-    featured: Boolean!
-    rating: Float
-    playCount: Int!
-    createdAt: String!
-    updatedAt: String!
+    thumbnail: String
+    featured: Boolean
+    playCount: Int
+    developer: String
+    width: Int
+    height: Int
+    instructions: String
+    createdAt: String
+    updatedAt: String
   }
 
   type Category {
@@ -21,95 +25,92 @@ const typeDefs = gql`
     name: String!
     slug: String!
     description: String
-    gameCount: Int!
-    games: [Game!]!
+    imageUrl: String
+    games: [Game]
+    createdAt: String
+    updatedAt: String
   }
 
   type User {
     id: ID!
     username: String!
     email: String!
-    favorites: [Game!]!
-    playHistory: [Game!]!
-    createdAt: String!
+    avatar: String
+    role: String
+    favorites: [Game]
+    playHistory: [Game]
+    createdAt: String
+    updatedAt: String
   }
 
   type GameStats {
     totalGames: Int!
     totalPlays: Int!
-    popularCategories: [Category!]!
-    featuredGames: [Game!]!
+    popularCategories: [Category]
+    featuredGames: [Game]
   }
 
   type TestResult {
-    totalGames: Int!
-    sampleGame: String!
-    database: String!
-    collection: String!
-  }
-
-  input GameInput {
-    title: String!
-    description: String!
-    category: String!
-    tags: [String!]!
-    url: String!
-    thumbnail: String!
-    featured: Boolean = false
-  }
-
-  input GameFilter {
-    category: String
-    tags: [String!]
-    featured: Boolean
-    search: String
+    totalGames: Int
+    sampleGame: String
+    database: String
+    collection: String
   }
 
   type Query {
-    # Games
-    games(filter: GameFilter, limit: Int = 20, offset: Int = 0): [Game!]!
+    games(limit: Int, offset: Int): [Game]
     game(id: ID!): Game
-    gamesByCategory(category: String!, limit: Int = 20): [Game!]!
-    searchGames(query: String!, limit: Int = 20): [Game!]!
-    featuredGames(limit: Int = 10): [Game!]!
-    popularGames(limit: Int = 10): [Game!]!
+    gamesByCategory(category: String!, limit: Int): [Game]
+    searchGames(query: String!, limit: Int): [Game]
+    featuredGames(limit: Int): [Game]
+    popularGames(limit: Int): [Game]
     
-    # Categories
-    categories: [Category!]!
+    categories: [Category]
     category(slug: String!): Category
     
-    # Stats
-    gameStats: GameStats!
-
-    # Test
-    testConnection: TestResult!
-
-    # User
-    me: User
-    userFavorites: [Game!]!
+    users: [User]
+    user(id: ID!): User
+    
+    gameStats: GameStats
+    testConnection: TestResult
   }
 
   type Mutation {
-    # Games
-    addGame(input: GameInput!): Game!
-    updateGame(id: ID!, input: GameInput!): Game!
-    deleteGame(id: ID!): Boolean!
-    incrementPlayCount(gameId: ID!): Game!
-    
-    # User actions
-    addToFavorites(gameId: ID!): Boolean!
-    removeFromFavorites(gameId: ID!): Boolean!
-    recordPlay(gameId: ID!): Boolean!
-    
-    # Auth (for admin)
-    login(email: String!, password: String!): String!
-    register(username: String!, email: String!, password: String!): String!
-  }
+    createGame(
+      title: String!
+      description: String
+      category: String
+      tags: [String]
+      url: String!
+      thumbnail: String
+      featured: Boolean
+      developer: String
+      width: Int
+      height: Int
+      instructions: String
+    ): Game
 
-  type Subscription {
-    gameAdded: Game!
-    playCountUpdated(gameId: ID!): Game!
+    updateGame(
+      id: ID!
+      title: String
+      description: String
+      category: String
+      tags: [String]
+      url: String
+      thumbnail: String
+      featured: Boolean
+      developer: String
+      width: Int
+      height: Int
+      instructions: String
+    ): Game
+
+    deleteGame(id: ID!): Boolean
+    
+    incrementPlayCount(id: ID!): Game
+    toggleFeatured(id: ID!): Game
   }
 `;
 
-module.exports = { typeDefs };
+// Export with the new name
+module.exports = { typeDefs: graphqlTypeDefs };

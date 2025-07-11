@@ -2,7 +2,8 @@ const { Game } = require('../models/Game');
 const { Category } = require('../models/Category');
 const { User } = require('../models/User');
 
-const resolvers = {
+// Rename to avoid duplicate declaration
+const graphqlResolvers = {
   Query: {
     games: async (_, { limit = 20, offset = 0 }) => {
       try {
@@ -252,4 +253,5 @@ const resolvers = {
   }
 };
 
-module.exports = { resolvers };
+// Export with the new name
+module.exports = { resolvers: graphqlResolvers };

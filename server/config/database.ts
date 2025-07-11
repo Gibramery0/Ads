@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-async function connectDB() {
+// Rename to avoid duplicate declaration
+async function connectToDatabase() {
   try {
     const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/games';
     
@@ -12,7 +13,7 @@ async function connectDB() {
     console.log('✅ MongoDB connected successfully');
     
     // Handle connection events
-    mongoose.connection.on('error', (err) => {
+    mongoose.connection.on('error', (err: Error) => {
       console.error('❌ MongoDB connection error:', err);
     });
 
@@ -33,4 +34,5 @@ async function connectDB() {
   }
 }
 
-module.exports = { connectDB };
+// Export with the new name
+module.exports = { connectDB: connectToDatabase };
